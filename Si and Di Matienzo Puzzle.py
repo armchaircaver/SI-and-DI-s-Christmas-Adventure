@@ -18,7 +18,7 @@ length. No cheating by looking at the Matienzo caves website!
 5. 0099 isn’t in Mullir
 
 6. Of the undescended shaft and the cave in Seldesuto, one is 1900 and the
-other is 0m long
+other is 0m long ("undescended shaft" should read "shaft bash")
 
 7. 1900 is longer than the cave in Las Calzadills
 
@@ -40,7 +40,6 @@ lengths_caves = [ (length,cave) for length in lengths
                   if cave['0603'] ==  length[25]
                   and cave['1900'] != length[0] ]
 
-print (len(lengths_caves))
  
 lengths_caves_areas = [ (length,cave,area) for     length,cave in  lengths_caves
                         for area in dict_perms(['Mullir','Seldesuto','La Collina','Las Calzadillas','La Secada'])
@@ -61,11 +60,11 @@ lengths_caves_areas_prospects = [(length,cave,area,prospect) for length,cave,are
                                  and prospect['Bolt climb'] != area['La Secada']
                                  and prospect['Shaft bash'] != cave['1716']
                                  and prospect['Shaft bash'] != area['La Secada']
-                                 and prospect['Undescended pitch'] != area['Seldesuto']
-                                 and ( ( prospect['Undescended pitch'] == cave['1900']
+                                 and prospect['Shaft bash'] != area['Seldesuto']
+                                 and ( ( prospect['Shaft bash'] == cave['1900']
                                        and area['Seldesuto'] == length[0])
                                        or
-                                       ( prospect['Undescended pitch'] == length[0] 
+                                       ( prospect['Shaft bash'] == length[0] 
                                        and area['Seldesuto'] == cave['1900'] )
                                        )
                                  and (cave['0810'] == area['La Collina']
@@ -74,7 +73,6 @@ lengths_caves_areas_prospects = [(length,cave,area,prospect) for length,cave,are
                                  and area['La Secada'] < prospect['Bolt climb']
                                  ]
 
-print (len(lengths_caves_areas_prospects))
 sols = set()       
 for length,cave,area,prospect in lengths_caves_areas_prospects:
   sols.add( tuple( [(key(cave,pos),key(length,pos), key(area,pos),key(prospect,pos)) for pos in range(1,6)]) )
