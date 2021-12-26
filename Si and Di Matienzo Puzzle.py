@@ -17,7 +17,7 @@ length. No cheating by looking at the Matienzo caves website!
 
 5. 0099 isn’t in Mullir
 
-6. Of the undescended shaft and the cave in Seldesuto, one is 1900 and the
+6. Of the shaft bash and the cave in Seldesuto, one is 1900 and the
 other is 0m long ("undescended shaft" should read "shaft bash")
 
 7. 1900 is longer than the cave in Las Calzadills
