@@ -27,31 +27,31 @@ other is 0m long ("undescended shaft" should read "shaft bash")
 """
 from itertools import permutations as perm
 
+lengths = [0, 5, 25, 65, 954]
+
 def dict_perms( category_list ):
-  for p in perm(range(1,6)): yield {a:b for (a,b) in zip(category_list,p)}
+  for p in perm(lengths): yield {a:b for (a,b) in zip(category_list,p)}
 
 def key(d, v): # find a key in dictionary d with value v
   return [name for name, val in d.items() if val == v][0]
 
-lengths = [{0:1, 5:2, 25:3, 65:4, 954:5}]
 
-lengths_caves = [ (length,cave) for length in lengths
-                  for cave in dict_perms(['1900','1716','0810','0099','0603'])
-                  if cave['0603'] ==  length[25]
-                  and cave['1900'] != length[0] ]
+caves = [ cave for cave in dict_perms(['1900','1716','0810','0099','0603'])
+                  if cave['0603'] ==  25
+                  and cave['1900'] != 0 ]
 
  
-lengths_caves_areas = [ (length,cave,area) for     length,cave in  lengths_caves
+caves_areas = [ (cave,area) for cave in  caves
                         for area in dict_perms(['Mullir','Seldesuto','La Collina','Las Calzadillas','La Secada'])
-                        if length[25] == area['La Secada']
+                        if 25 == area['La Secada']
                         and cave['1716'] != area['La Secada']
                         and cave['0099'] != area['Mullir']
-                        and ( area['Seldesuto'] == cave['1900'] or area['Seldesuto'] == length[0] )
+                        and ( area['Seldesuto'] == cave['1900'] or area['Seldesuto'] == 0 )
                         and cave['1900'] > area['Las Calzadillas']
                         ]
 
                                         
-lengths_caves_areas_prospects = [(length,cave,area,prospect) for length,cave,area in lengths_caves_areas
+caves_areas_prospects = [(cave,area,prospect) for cave,area in caves_areas
                                  for prospect in dict_perms(['Dig-echo','Bolt climb','Undescended pitch',
                                                              'Unsupported dig','Shaft bash'])
                                  if prospect['Dig-echo'] != cave['1716']
@@ -60,11 +60,12 @@ lengths_caves_areas_prospects = [(length,cave,area,prospect) for length,cave,are
                                  and prospect['Bolt climb'] != area['La Secada']
                                  and prospect['Shaft bash'] != cave['1716']
                                  and prospect['Shaft bash'] != area['La Secada']
+                                 
                                  and prospect['Shaft bash'] != area['Seldesuto']
                                  and ( ( prospect['Shaft bash'] == cave['1900']
-                                       and area['Seldesuto'] == length[0])
+                                       and area['Seldesuto'] == 0)
                                        or
-                                       ( prospect['Shaft bash'] == length[0] 
+                                       ( prospect['Shaft bash'] == 0 
                                        and area['Seldesuto'] == cave['1900'] )
                                        )
                                  and (cave['0810'] == area['La Collina']
@@ -74,10 +75,10 @@ lengths_caves_areas_prospects = [(length,cave,area,prospect) for length,cave,are
                                  ]
 
 sols = set()       
-for length,cave,area,prospect in lengths_caves_areas_prospects:
-  sols.add( tuple( [(key(cave,pos),key(length,pos), key(area,pos),key(prospect,pos)) for pos in range(1,6)]) )
-  for pos in range(1,6):
-    print ( key(cave,pos), ",",key(length,pos), ",",key(area,pos),",",key(prospect,pos))
+for cave,area,prospect in caves_areas_prospects:
+  sols.add( tuple( [(key(cave,length), length, key(area,length),key(prospect,length)) for length in lengths]) )
+  for length in lengths:
+    print ( key(cave,length), ",",length, ",",key(area,length),",",key(prospect,length))
   print (" ")  
 
 print ( len(sols) , "distinct solutions" )                                
